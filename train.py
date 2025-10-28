@@ -96,7 +96,8 @@ def train():
         
         with open("training.log", "a") as f:
             f.write(f"Epoch {epoch} | train_loss {info['loss']:.4f} "
-            f"seg {info['loss_seg']:.4f} edge {info['loss_edge']:.4f} | "
+            f"dice {info['loss_dice']:.4f} edge {info['loss_edge']:.4f} | "
+            f"ssim {info['loss_ssim']:.4f} | "
             f"val_dice {val_info['dice']:.4f} val_iou {val_info['iou']:.4f} | "
             f"best {best_dice:.4f}\n")  
     #print('Training finished. Best val dice:', best_dice)
