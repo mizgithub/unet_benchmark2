@@ -4,6 +4,7 @@ from unet_model import UNet
 from train_epoch import train_one_epoch
 from data_fetcher import load_thyroid_datasets
 from validate import validate
+from viu_net import VIUNet
 import pickle
 def save_checkpoint(state: dict, path: str):
     torch.save(state, path)
@@ -34,7 +35,8 @@ def train():
 
     # Model and Optimizer setup
     # ... (your existing setup) ...
-    model = UNet(n_channels=1, n_classes=1)
+    # model = UNet(n_channels=1, n_classes=1)
+    model = VIUNet()
     model = model.to(device)
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
