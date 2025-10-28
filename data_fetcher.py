@@ -37,14 +37,15 @@ class ThyroidDataset(Dataset):
 # ===== Dataset Initialization and Split =====
 
 def load_thyroid_datasets(batch_size=8, seed=42):
-    path = kagglehub.dataset_download("eiraoi/thyroidultrasound")
-    print("Dataset downloaded. arranging ... ")
+    # path = kagglehub.dataset_download("eiraoi/thyroidultrasound")
+    # print("Dataset downloaded. arranging ... ")
     transform = transforms.Compose([
         transforms.Resize((128, 128)),
         transforms.ToTensor()
     ])
 
-    dataset = ThyroidDataset(path+"/p_image", path+"/p_mask", transform=transform)
+    # dataset = ThyroidDataset(path+"/p_image", path+"/p_mask", transform=transform)
+    dataset = ThyroidDataset("../trimmed_data/image", "../trimmed_data/mask", transform=transform)
 
     total_size = len(dataset)
     train_size = int(0.7 * total_size)
