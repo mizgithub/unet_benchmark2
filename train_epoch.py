@@ -3,7 +3,7 @@ import torch.nn.functional as F
 import time
 from tqdm import tqdm
 from physics_weight import compute_depth_weight_map, compute_adaptive_depth_weight, compute_snsr_weight_map
-from loss_functions import bce_dice_loss, edge_l1_loss
+from loss_functions import bce_dice_loss, edge_l1_loss, dice_loss, ssim_loss
 import random
 import time
 import random
@@ -41,19 +41,25 @@ def train_one_epoch(model, dataloader, optimizer, device, epoch, hyper):
         logits, mask_prob, B_sim = model(img)
 
         # --- Segmentation loss (BCE + Dice) ---
-        loss_seg = bce_dice_loss(
+        
+
+        dice_loss = dice_loss(
             logits,
             mask,
-            w_bce=hyper['w_bce'],
-            w_dice=hyper['w_dice'],
             weight_map=weight_map
         )
+
+        ssim_loss = ssim_loss(
+            logits,
+            mask,
+        )
+ 
 
         # --- Edge consistency loss ---
         loss_edge = edge_l1_loss(mask_prob, mask, weight_map=weight_map)
 
         # --- Total loss ---
-        loss = loss_seg + hyper['w_edge'] * loss_edge
+        loss = dice_loss + loss_edge + ssim_loss
 
         optimizer.zero_grad()
         loss.backward()
@@ -61,7 +67,7 @@ def train_one_epoch(model, dataloader, optimizer, device, epoch, hyper):
 
         # --- Tracking losses ---
         running += float(loss.item())
-        seg_running += float(loss_seg.item())
+        seg_running += float(dice_loss.item())
         edge_running += float(loss_edge.item())
         n += 1
 

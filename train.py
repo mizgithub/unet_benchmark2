@@ -35,8 +35,8 @@ def train():
 
     # Model and Optimizer setup
     # ... (your existing setup) ...
-    # model = UNet(n_channels=1, n_classes=1)
-    model = VIUNet()
+    model = UNet(n_channels=1, n_classes=1)
+    # model = VIUNet()
     model = model.to(device)
 
     optimizer = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
