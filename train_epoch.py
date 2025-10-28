@@ -12,7 +12,7 @@ import torch
 
 def train_one_epoch(model, dataloader, optimizer, device, epoch, hyper):
     model.train()
-    running = seg_running = edge_running = 0.0
+    running = seg_running = edge_running = ssim_running = 0.0
     n = 0
     t0 = time.time()
 
@@ -43,13 +43,13 @@ def train_one_epoch(model, dataloader, optimizer, device, epoch, hyper):
         # --- Segmentation loss (BCE + Dice) ---
         
 
-        dice_loss = dice_loss(
+        dice = dice_loss(
             logits,
             mask,
             weight_map=weight_map
         )
 
-        ssim_loss = ssim_loss(
+        ssim = ssim_loss(
             logits,
             mask,
         )
@@ -59,7 +59,7 @@ def train_one_epoch(model, dataloader, optimizer, device, epoch, hyper):
         loss_edge = edge_l1_loss(mask_prob, mask, weight_map=weight_map)
 
         # --- Total loss ---
-        loss = dice_loss + loss_edge + ssim_loss
+        loss = ssim + loss_edge + dice
 
         optimizer.zero_grad()
         loss.backward()
@@ -67,14 +67,16 @@ def train_one_epoch(model, dataloader, optimizer, device, epoch, hyper):
 
         # --- Tracking losses ---
         running += float(loss.item())
-        seg_running += float(dice_loss.item())
+        seg_running += float(dice.item())
         edge_running += float(loss_edge.item())
+        ssim_running +=float(ssim.item())
         n += 1
 
         pbar.set_postfix({
             'L_total': f'{running / n:.4f}',
             'L_seg': f'{seg_running / n:.4f}',
-            'L_edge': f'{edge_running / n:.4f}'
+            'L_edge': f'{edge_running / n:.4f}',
+            'L_ssim': f'{ssim_running / n:4f}'
         })
 
     elapsed = time.time() - t0
@@ -84,7 +86,8 @@ def train_one_epoch(model, dataloader, optimizer, device, epoch, hyper):
     return {
         'epoch': epoch,
         'loss': running / max(1, n),
-        'loss_seg': seg_running / max(1, n),
+        'loss_dice': seg_running / max(1, n),
         'loss_edge': edge_running / max(1, n),
+        'loss_ssim': ssim_running / max(1,n),
         'time_s': elapsed
     }
