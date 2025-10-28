@@ -54,8 +54,9 @@ def train():
     history = {
         'epoch': [],
         'train_loss': [],
-        'train_loss_seg': [],
+        'train_loss_dice': [],
         'train_loss_edge': [],
+        'train_loss_ssim': [],
         'val_dice': [],
         'val_iou': [],
         'lr': []
@@ -70,8 +71,9 @@ def train():
 
         history['epoch'].append(epoch)
         history['train_loss'].append(info['loss'])
-        history['train_loss_seg'].append(info['loss_seg'])
+        history['train_loss_dice'].append(info['loss_dice'])
         history['train_loss_edge'].append(info['loss_edge'])
+        history['train_loss_ssim'].append(info['loss_ssim'])
         history['val_dice'].append(val_info['dice'])
         history['val_iou'].append(val_info['iou'])
         history['lr'].append(optimizer.param_groups[0]['lr'])
