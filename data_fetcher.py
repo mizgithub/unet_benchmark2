@@ -36,11 +36,11 @@ class ThyroidDataset(Dataset):
 
 # ===== Dataset Initialization and Split =====
 
-def load_thyroid_datasets(batch_size=8, seed=42):
+def load_thyroid_datasets(batch_size=32, seed=42):
     # path = kagglehub.dataset_download("eiraoi/thyroidultrasound")
     # print("Dataset downloaded. arranging ... ")
     transform = transforms.Compose([
-        transforms.Resize((128, 128)),
+        transforms.Resize((256, 256)),
         transforms.ToTensor()
     ])
 

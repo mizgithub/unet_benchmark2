@@ -84,16 +84,7 @@ def train():
 
         # Save checkpoints
         ckpath = os.path.join(work_dir, f'ck_epoch_{epoch:03d}.pth')
-        # save_checkpoint({'epoch': epoch, 'model': model.state_dict(), 'optim': optimizer.state_dict(), 'best_dice': best_dice}, ckpath)
-        # if is_best:
-            # Note: You should generally save the 'best' model's state dictionary
-            # or the whole model, not just the checkpoint info, but maintaining
-            # your original save_checkpoint structure.
-            # save_checkpoint({'epoch': epoch, 'model': model.state_dict(), 'optim': optimizer.state_dict(), 'best_dice': best_dice}, os.path.join(work_dir, 'best.pth'))
-
-        # Original end-of-epoch print statement
-        #print(f"Epoch {epoch} | train_loss {info['loss']:.4f} seg {info['loss_seg']:.4f} edge {info['loss_edge']:.4f} | val_dice {val_info['dice']:.4f} val_iou {val_info['iou']:.4f} | best {best_dice:.4f}")
-        
+    
         with open("training.log", "a") as f:
             f.write(f"Epoch {epoch} | train_loss {info['loss']:.4f} "
             f"dice {info['loss_dice']:.4f} edge {info['loss_edge']:.4f} | "
