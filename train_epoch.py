@@ -2,7 +2,7 @@ import torch
 import torch.nn.functional as F
 import time
 from tqdm import tqdm
-from physics_weight import compute_depth_weight_map, compute_adaptive_depth_weight, compute_snsr_weight_map
+from physics_weight import compute_depth_weight_map, compute_adaptive_depth_weight
 from loss_functions import bce_dice_loss, edge_l1_loss, dice_loss, ssim_loss
 import random
 import time
