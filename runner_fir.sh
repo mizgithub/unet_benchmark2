@@ -1,9 +1,9 @@
 #!/bin/bash
 #SBATCH --job-name=fir_h100_job      # Job name
-#SBATCH --time=0-6:00               # Max run time (D-HH:MM). Max is 7 days (168h).
+#SBATCH --time=1-00:00               # Max run time (D-HH:MM). Max is 7 days (168h).
 #SBATCH --output=%x-%j-benchmark.out           # Output file
 #SBATCH --error=%x-%j-benchmark.err            # Error file
-#SBATCH --gpus=h100:4                # Request one full H100 (80GB)
+#SBATCH --gpus=h100:4               # Request one full H100 (80GB)
 #SBATCH --cpus-per-task=12           # Request 12 CPU cores (Recommended ratio: 12 cores per H100)
 #SBATCH --mem=128G                    # Request 64 GB of system RAM (approx 1/4 of node memory for 1 GPU)
 
